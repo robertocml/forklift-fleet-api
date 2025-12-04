@@ -1,11 +1,9 @@
 from fastapi import FastAPI
+from app.db.database import Base, engine
+from app.routers import forklift
 
-app = FastAPI(
-    title="Forklift Fleet API",
-    version="0.1.0",
-    description="API FOR FORKLIFT FLEET."
-)
+Base.metadata.create_all(bind=engine)
 
-@app.get("/root")
-def root():
-    return {"status": "ok", "message": "initial endpoint"}
+app = FastAPI()
+
+app.include_router(forklift.router)
